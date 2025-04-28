@@ -61,6 +61,15 @@ export default function EditListingPage() {
 
   return (
     <div className="p-6 max-w-3xl mx-auto">
+      <div className="mb-8 text-center">
+        <h1 className="text-3xl font-bold mb-2">Edit Your Listing</h1>
+        <p className="text-gray-600 text-sm max-w-2xl mx-auto">
+          Update the details of your listing below. You can edit the title,
+          property information, guest capacity, pricing, and descriptions. Once
+          you&apos;re done, click &quot;Save Changes&quot; to update your
+          listing.
+        </p>
+      </div>
       <div className="border rounded-2xl overflow-hidden shadow-md flex flex-col p-6 bg-white space-y-6">
         {/* Title and Town */}
         <div>
