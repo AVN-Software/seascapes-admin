@@ -1,15 +1,16 @@
 "use client";
 
 import { Listing } from "@/types/listing";
-import { ListingAmenity } from "@/types/amenity";
+import { Amenity } from "@/types/amenity";
 import Link from "next/link";
+import AmenityDisplayModule from "../amenities/AmenityDisplayModule";
 
 interface ListingCardProps {
   listing: Listing;
-  amenities: ListingAmenity[];
+  amenities: Amenity[];
 }
 
-export default function ListingCard({ listing }: ListingCardProps) {
+export default function ListingCard({ listing, amenities }: ListingCardProps) {
   return (
     <div className="border rounded-2xl overflow-hidden shadow-md flex flex-col hover:scale-105 transition-transform p-6 bg-white">
       <div className="flex flex-col gap-2">
@@ -55,7 +56,7 @@ export default function ListingCard({ listing }: ListingCardProps) {
           </ul>
         </div>
 
-        {/* Short Description */}
+        {/* Listing Overview */}
         <div className="mt-4">
           <p className="text-md font-semibold text-gray-700">
             Listing Overview:
@@ -71,21 +72,29 @@ export default function ListingCard({ listing }: ListingCardProps) {
           <p className="text-sm text-gray-600 mt-1">{listing.property_desc}</p>
         </div>
 
-        {/* Amenities Section */}
+        {/* Amenities */}
+        {amenities.length > 0 && (
+          <div className="mt-4">
+            <p className="text-md font-semibold text-gray-700 mb-2">
+              Amenities:
+            </p>
+            <AmenityDisplayModule
+              amenities={amenities}
+              editMode={false}
+              selectedIds={[]} // no selections in view-only
+              onToggleSelect={() => {}} // no-op
+              onRefresh={() => {}} // no-op
+            />
+          </div>
+        )}
 
-        {/* Edit Buttons */}
+        {/* Edit Button */}
         <div className="flex flex-wrap gap-3 mt-6">
           <Link
             href={`/listings/${listing.id}/edit/basic`}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition whitespace-nowrap"
-          >
-            Edit Listing
-          </Link>
-          <Link
-            href={`/listings/${listing.id}/edit/amenities`}
             className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition whitespace-nowrap"
           >
-            Edit Amenities
+            Edit Listing
           </Link>
         </div>
       </div>

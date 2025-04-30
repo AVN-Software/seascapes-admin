@@ -1,14 +1,14 @@
 import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import { Listing } from "@/types/listing";
+import { Amenity, ListingAmenity } from "@/types/amenity";
 
-import React from "react";
-import ListingsSlider from "@/components/ListingsSlider";
-import { ListingAmenity } from "@/types/amenity";
+import ListingsSlider from "@/components/listing/ListingsSlider";
 
 export default async function Home() {
   const supabase = await createClient();
 
+  // 1. Fetch Listings
   const { data: listings, error: listingError } = await supabase
     .from("listings")
     .select("*");
@@ -20,48 +20,39 @@ export default async function Home() {
 
   const typedListings = listings as Listing[];
 
-  // 2. Fetch All Amenities (master list)
+  // 2. Fetch All Amenities
   const { data: amenitiesData, error: amenitiesError } = await supabase
     .from("amenities")
     .select("*");
 
-  if (amenitiesError) {
+  if (amenitiesError || !amenitiesData) {
     console.error("Error fetching amenities:", amenitiesError);
+    return notFound();
   }
 
-  // 3. Fetch Amenity Map (links)
+  const typedAmenities = amenitiesData as Amenity[];
+
+  // 3. Fetch Amenity Map (listing → amenity links)
   const { data: amenityMapData, error: amenityMapError } = await supabase
     .from("amenity_map")
     .select("*");
 
-  if (amenityMapError) {
+  if (amenityMapError || !amenityMapData) {
     console.error("Error fetching amenity_map:", amenityMapError);
+    return notFound();
   }
 
-  // 4. Build listing_amenities array
-  const listingAmenities: ListingAmenity[] = [];
+  const typedAmenityMap = amenityMapData as ListingAmenity[];
 
-  if (amenitiesData && amenityMapData) {
-    for (const mapItem of amenityMapData) {
-      const matchedAmenity = amenitiesData.find(
-        (a) => a.amenity_id === mapItem.amenity_id
-      );
-
-      if (matchedAmenity) {
-        listingAmenities.push({
-          listing_id: mapItem.listing_id,
-          amenity_id: matchedAmenity.amenity_id,
-          name: matchedAmenity.name,
-          category: matchedAmenity.category,
-        });
-      }
-    }
-  }
-
+  // 4. Render
   return (
     <main className="p-6 max-w-7xl mx-auto">
       <h1 className="text-3xl font-bold mb-6">Browse Listings</h1>
-      <ListingsSlider listings={typedListings} amenities={listingAmenities} />
+      <ListingsSlider
+        listings={typedListings}
+        amenities={typedAmenities}
+        amenityMap={typedAmenityMap}
+      />
     </main>
   );
 }
