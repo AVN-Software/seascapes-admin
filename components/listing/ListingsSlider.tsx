@@ -1,3 +1,4 @@
+"use client";
 import { Listing } from "@/types/listing";
 import ListingCard from "@/components/listing/ListingCard";
 import "keen-slider/keen-slider.min.css";
