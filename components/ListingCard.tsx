@@ -1,10 +1,12 @@
 "use client";
 
 import { Listing } from "@/types/listing";
+import { ListingAmenity } from "@/types/amenity";
 import Link from "next/link";
 
 interface ListingCardProps {
   listing: Listing;
+  amenities: ListingAmenity[];
 }
 
 export default function ListingCard({ listing }: ListingCardProps) {
@@ -69,13 +71,21 @@ export default function ListingCard({ listing }: ListingCardProps) {
           <p className="text-sm text-gray-600 mt-1">{listing.property_desc}</p>
         </div>
 
-        {/* Edit Button */}
-        <div className="mt-6">
+        {/* Amenities Section */}
+
+        {/* Edit Buttons */}
+        <div className="flex flex-wrap gap-3 mt-6">
           <Link
-            href={`/listings/${listing.id}/edit`}
-            className="inline-block bg-blue-600 hover:bg-blue-700 text-white text-center px-4 py-2 rounded-lg font-semibold text-sm transition"
+            href={`/listings/${listing.id}/edit/basic`}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition whitespace-nowrap"
           >
             Edit Listing
+          </Link>
+          <Link
+            href={`/listings/${listing.id}/edit/amenities`}
+            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition whitespace-nowrap"
+          >
+            Edit Amenities
           </Link>
         </div>
       </div>

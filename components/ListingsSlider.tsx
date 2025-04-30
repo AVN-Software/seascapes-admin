@@ -4,12 +4,17 @@ import { Listing } from "@/types/listing";
 import ListingCard from "@/components/ListingCard";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
+import { ListingAmenity } from "@/types/amenity";
 
 interface ListingsSliderProps {
   listings: Listing[];
+  amenities: ListingAmenity[];
 }
 
-export default function ListingsSlider({ listings }: ListingsSliderProps) {
+export default function ListingsSlider({
+  listings,
+  amenities,
+}: ListingsSliderProps) {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 1,
@@ -24,7 +29,7 @@ export default function ListingsSlider({ listings }: ListingsSliderProps) {
       <div ref={sliderRef} className="keen-slider">
         {listings.map((listing) => (
           <div key={listing.id} className="keen-slider__slide px-4">
-            <ListingCard listing={listing} />
+            <ListingCard listing={listing} amenities={amenities} />
           </div>
         ))}
       </div>
