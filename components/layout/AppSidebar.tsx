@@ -29,13 +29,7 @@ export default function AppSidebar() {
       name: "Calendar",
       href: "/calendar",
       icon: <FiCalendar className="w-5 h-5" />,
-      sublinks: [{ name: "Seasons", href: "/calendar/seasons" }],
-    },
-    {
-      name: "Pricing Management",
-      href: "/pricing",
-      icon: <FiCalendar className="w-5 h-5" />,
-      sublinks: [{ name: "Rate Plans", href: "/pricing/rate-plans" }],
+      sublinks: [{ name: "Seasons", href: "/seasons" }],
     },
   ];
 
