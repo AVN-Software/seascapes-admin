@@ -6,16 +6,35 @@ import { FaHeart, FaClock } from "react-icons/fa";
 import Link from "next/link";
 import { ListingCardData } from "@/types/listing";
 
-// DB-backed ListingCard type
-
 interface ListingCardProps {
   listingCardData: ListingCardData;
+  selected?: boolean;
+  onSelect?: (id: string) => void;
 }
 
-const ListingCard: React.FC<ListingCardProps> = ({ listingCardData }) => {
+const ListingCard: React.FC<ListingCardProps> = ({
+  listingCardData,
+  selected = false,
+  onSelect,
+}) => {
   return (
-    <Link href={`/listings/${listingCardData.id}/view`}>
-      <div className="group relative w-full flex flex-col overflow-hidden border border-[#e5e7eb] bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+    <div className="group relative w-full h-full flex flex-col overflow-hidden border border-[#e5e7eb] bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
+      {/* Checkbox overlay */}
+      <div className="absolute top-3 left-3 z-20">
+        <input
+          type="checkbox"
+          checked={selected}
+          onChange={() => onSelect?.(listingCardData.id)}
+          className="w-4 h-4 accent-blue-600 cursor-pointer"
+          onClick={(e) => e.stopPropagation()} // prevent checkbox clicks from triggering Link
+        />
+      </div>
+
+      {/* Link wraps the rest of the card */}
+      <Link
+        href={`/listings/${listingCardData.id}/view`}
+        className="flex-1 flex flex-col"
+      >
         {/* Image */}
         <div className="relative h-60 w-full">
           <Image
@@ -46,8 +65,8 @@ const ListingCard: React.FC<ListingCardProps> = ({ listingCardData }) => {
             guests • {listingCardData.num_baths} baths
           </p>
         </div>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

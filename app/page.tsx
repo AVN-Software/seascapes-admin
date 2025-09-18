@@ -2,7 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 
 import { Listing, ListingCardData, mapListingToCard } from "@/types/listing";
-import ListingSection from "@/components/grids/ListingGrid";
+import ListingSection from "@/components/listing/ListingGrid";
 
 export default async function Home() {
   const supabase = await createClient();
@@ -28,7 +28,6 @@ export default async function Home() {
   // 4. Render
   return (
     <main className="p-6 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Browse Listings</h1>
       <ListingSection listingCards={listingCardsData} />
     </main>
   );
