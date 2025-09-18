@@ -121,7 +121,6 @@ export default async function ViewListingPage(props: { params: Params }) {
                   value: listing.cleaning_fee,
                 },
               ]}
-              ctaLink={`/listings/${listing.id}/booking`}
               formatCurrency={formatCurrency}
             />
 
