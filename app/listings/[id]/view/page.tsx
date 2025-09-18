@@ -129,18 +129,18 @@ export default async function ViewListingPage(props: { params: Params }) {
               actions={[
                 {
                   label: "Edit Basic Info",
-                  href: `/listings/${listing.id}/edit/basic`,
+                  href: `/listings/${listing.id}/basic`,
                   icon: Edit,
                 },
                 {
                   label: "Edit Rates", // New action
-                  href: `/listings/${listing.id}/edit/rates`,
+                  href: `/listings/${listing.id}/rates`,
                   icon: DollarSign,
                   variant: "secondary",
                 },
                 {
                   label: "Manage Amenities",
-                  href: `/listings/${listing.id}/edit/amenities`,
+                  href: `/listings/${listing.id}/amenities`,
                   icon: Settings,
                 },
                 {
