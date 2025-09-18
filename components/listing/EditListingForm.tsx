@@ -189,32 +189,17 @@ export default function EditListingForm() {
                   </label>
                   <input
                     type="number"
-                    value={draftListing.default_base_price}
+                    value={draftListing.default_price}
                     onChange={(e) =>
                       setDraftListing({
                         ...draftListing,
-                        default_base_price: +e.target.value,
+                        default_price: +e.target.value,
                       })
                     }
                     className="w-full border p-2 rounded"
                   />
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">
-                    Extra Guest Fee
-                  </label>
-                  <input
-                    type="number"
-                    value={draftListing.default_guest_fee}
-                    onChange={(e) =>
-                      setDraftListing({
-                        ...draftListing,
-                        default_guest_fee: +e.target.value,
-                      })
-                    }
-                    className="w-full border p-2 rounded"
-                  />
-                </div>
+
                 <div>
                   <label className="block text-sm font-medium mb-1">
                     Cleaning Fee
