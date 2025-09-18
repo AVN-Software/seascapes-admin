@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^6.16.2",
+    "@prisma/client": "^6.16.2",
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.4",
     "keen-slider": "^6.8.6",
@@ -16,7 +18,8 @@
     "next": "^15.3.1",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-icons": "^5.5.0"
+    "react-icons": "^5.5.0",
+    "swiper": "^12.0.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
@@ -27,6 +30,7 @@
     "@types/react-dom": "^19.1.9",
     "eslint": "^9",
     "eslint-config-next": "15.3.1",
+    "prisma": "^6.16.2",
     "tailwindcss": "^4",
     "typescript": "^5.9.2"
   },

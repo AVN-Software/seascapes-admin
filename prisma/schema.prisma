@@ -1,0 +1,173 @@
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+        
+/* -------------------- amenities -------------------- */
+model amenities {
+  amenity_id  String        @id @default(uuid())
+  name        String
+  category    String?
+  created_at  DateTime?     @default(now()) @db.Timestamptz(6)
+  updated_at  DateTime?     @db.Timestamptz(6)
+
+  amenity_map amenity_map[]
+}
+
+/* -------------------- amenity_map -------------------- */
+model amenity_map {
+  id          Int       @id @default(autoincrement())
+  amenity_id  String
+  listing_id  String
+  created_at  DateTime  @default(now()) @db.Timestamptz(6)
+
+  amenity amenities @relation(fields: [amenity_id], references: [amenity_id], onDelete: Cascade)
+  listing listings  @relation(fields: [listing_id], references: [id], onDelete: Cascade)
+
+  @@index([listing_id])
+  @@index([amenity_id])
+}
+
+/* -------------------- image_tasks -------------------- */
+model image_tasks {
+  id                   String    @id @default(uuid())
+  image_id             String
+  is_publishable       Boolean?
+  requires_processing  Boolean?
+  requires_review      Boolean?
+  task_stage           String?   // was DB enum "image_task_stage"; convert to a Prisma enum later if you have the exact values
+  created_at           DateTime? @default(now()) @db.Timestamptz(6)
+  processed_at         DateTime? @db.Timestamptz(6)
+  published_at         DateTime? @db.Timestamptz(6)
+  reviewed_at          DateTime? @db.Timestamptz(6)
+  updated_at           DateTime? @db.Timestamptz(6)
+
+  image property_images @relation(fields: [image_id], references: [id], onDelete: Cascade)
+
+  @@index([image_id])
+}
+
+/* -------------------- listing_images -------------------- */
+model listing_images {
+  listing_id    String
+  image_id      String
+  display_order Int
+  caption       String
+  url           String
+  is_primary    Boolean
+  created_at    DateTime @default(now()) @db.Timestamptz(6)
+
+  listing listings        @relation(fields: [listing_id], references: [id], onDelete: Cascade)
+  image   property_images @relation(fields: [image_id], references: [id], onDelete: Cascade)
+
+  @@id([listing_id, image_id])
+  @@index([image_id])
+}
+
+/* -------------------- listings -------------------- */
+model listings {
+  id                 String  @id @default(uuid())
+  title              String
+  townname           String
+  property_type      String
+  num_bedrooms       Int
+  num_baths          Int
+  max_guests         Int
+  pets_allowed       Boolean
+  cleaning_fee       Int
+  cover_img          String
+  default_base_price Int
+  default_guest_fee  Int
+  listing_desc       String
+  property_desc      String
+
+  // relations
+  property_images property_images[]
+  rate_plans      rate_plans[]
+  listing_images  listing_images[]
+  amenity_map     amenity_map[]
+}
+
+/* -------------------- property_images -------------------- */
+model property_images {
+  id                String     @id @default(uuid())
+  listing_id        String
+  image_url         String
+  thumbnail_url     String?
+  caption           String?
+  colors            String[]
+  blurhash          String?
+  content_type      String?
+  file_size_kb      Int?
+  width             Int?
+  height            Int?
+  aspect_ratio      Float?
+  original_filename String?
+  sort_order        Int?
+  is_featured       Boolean?
+  is_public         Boolean?
+  deleted           Boolean?
+  uploaded_at       DateTime?  @default(now()) @db.Timestamptz(6)
+
+  listing     listings     @relation(fields: [listing_id], references: [id], onDelete: Cascade)
+  image_tasks image_tasks[]
+  listingRefs listing_images[]
+
+  @@index([listing_id])
+}
+
+/* -------------------- rate_plan_guest_pricing -------------------- */
+model rate_plan_guest_pricing {
+  id              String    @id @default(uuid())
+  rate_id         String
+  guest_count     Int
+  price_per_guest Int
+  created_at      DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at      DateTime? @db.Timestamptz(6)
+
+  rate rate_plans @relation(fields: [rate_id], references: [id], onDelete: Cascade)
+
+  @@unique([rate_id, guest_count])
+  @@index([rate_id])
+}
+
+/* -------------------- rate_plans -------------------- */
+model rate_plans {
+  id             String     @id @default(uuid())
+  listing_id     String
+  season_id      String
+  rate_type      String
+  per_unit_price Int?
+  start_date     DateTime
+  end_date       DateTime
+  is_default     Boolean?
+  created_at     DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at     DateTime?  @db.Timestamptz(6)
+
+  listing       listings                  @relation(fields: [listing_id], references: [id], onDelete: Cascade)
+  season        seasons                   @relation(fields: [season_id], references: [id], onDelete: Cascade)
+  guestPricing  rate_plan_guest_pricing[]
+
+  @@index([listing_id])
+  @@index([season_id])
+}
+
+/* -------------------- seasons -------------------- */
+model seasons {
+  id         String     @id @default(uuid())
+  name       String
+  minStay    Int
+  is_default Boolean?
+  start_date DateTime?
+  end_date   DateTime?
+  created_at DateTime?  @default(now()) @db.Timestamptz(6)
+  updated_at DateTime?  @db.Timestamptz(6)
+
+  rate_plans rate_plans[]
+}

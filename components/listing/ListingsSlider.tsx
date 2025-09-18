@@ -1,21 +1,16 @@
 "use client";
-import { Listing } from "@/types/listing";
+
 import ListingCard from "@/components/listing/ListingCard";
+import { ListingCardData } from "@/types/listing";
 import "keen-slider/keen-slider.min.css";
 import { useKeenSlider } from "keen-slider/react";
-import { ListingAmenity, Amenity } from "@/types/amenity";
 
 interface ListingsSliderProps {
-  listings: Listing[];
-  amenities: Amenity[]; // ✅ Now expects full Amenity objects
-  amenityMap: ListingAmenity[]; // ✅ Mapping of listing_id to amenity_id
+  listingCards: ListingCardData[];
+  // ✅ Mapping of listing_id to amenity_id
 }
 
-export default function ListingsSlider({
-  listings,
-  amenities,
-  amenityMap,
-}: ListingsSliderProps) {
+export default function ListingsSlider({ listingCards }: ListingsSliderProps) {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     slides: {
       perView: 1,
@@ -28,18 +23,10 @@ export default function ListingsSlider({
     <div className="relative py-6">
       {/* Slider */}
       <div ref={sliderRef} className="keen-slider">
-        {listings.map((listing) => {
-          const amenityIds = amenityMap
-            .filter((a) => a.listing_id === listing.id)
-            .map((a) => a.amenity_id);
-
-          const listingAmenities = amenities.filter((a) =>
-            amenityIds.includes(a.amenity_id)
-          );
-
+        {listingCards.map((listingCard) => {
           return (
-            <div key={listing.id} className="keen-slider__slide px-4">
-              <ListingCard listing={listing} amenities={listingAmenities} />
+            <div key={listingCard.id} className="keen-slider__slide px-4">
+              <ListingCard listingCardData={listingCard} />
             </div>
           );
         })}
