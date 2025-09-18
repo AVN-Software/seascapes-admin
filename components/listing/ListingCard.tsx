@@ -14,7 +14,7 @@ interface ListingCardProps {
 
 const ListingCard: React.FC<ListingCardProps> = ({ listingCardData }) => {
   return (
-    <Link href={`/listings/${listingCardData.id}`}>
+    <Link href={`/listings/${listingCardData.id}/view`}>
       <div className="group relative w-full flex flex-col overflow-hidden border border-[#e5e7eb] bg-white shadow-sm hover:shadow-md transition-shadow duration-300">
         {/* Image */}
         <div className="relative h-60 w-full">
