@@ -7,10 +7,12 @@ export interface Listing {
   num_baths: number;
   max_guests: number;
   pets_allowed: boolean;
-  default_base_price: number;
-  default_guest_fee: number;
-  cleaning_fee: number;
+  cleaning_fee: number; // Only cleaning fee remains in listing
   cover_img: string;
+  default_price: number;
+  minStay: number;
   listing_desc: string;
   property_desc: string;
+  created_at?: string;
+  updated_at?: string;
 }

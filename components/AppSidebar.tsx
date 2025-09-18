@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiHome, FiGrid } from "react-icons/fi";
+import { FiHome, FiGrid, FiCalendar } from "react-icons/fi";
 
 export default function AppSidebar() {
   const pathname = usePathname();
@@ -24,6 +24,18 @@ export default function AppSidebar() {
           href: "/manageAmenities/listing-amenities",
         },
       ],
+    },
+    {
+      name: "Calendar",
+      href: "/calendar",
+      icon: <FiCalendar className="w-5 h-5" />,
+      sublinks: [{ name: "Seasons", href: "/calendar/seasons" }],
+    },
+    {
+      name: "Pricing Management",
+      href: "/pricing",
+      icon: <FiCalendar className="w-5 h-5" />,
+      sublinks: [{ name: "Rate Plans", href: "/pricing/rate-plans" }],
     },
   ];
 
